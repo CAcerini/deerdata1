@@ -13,7 +13,7 @@ ggplot(dataset1, aes(x=age_in_years, y=JawLengthA, colour=Sex, group=Sex)) +
   geom_smooth() +
   theme_bw()
 
-#age and sex effects on size in juvenilles only 
+#age and sex effects on size in juveniles only 
 model2 <- lm(JawLengthA~age_in_years+Sex+age_in_years*Sex, data=data1Juv)
 anova(model1)
 
