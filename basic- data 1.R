@@ -165,7 +165,7 @@ par(mfrow=c(1,1))
 
 
 modelY <- lm(MassPerPellet~Sex+JawLengthA+deathage, data=Ndata1)
-summary(modelx)
+summary(modelY)
 
 #..removing the interaction
 
@@ -179,7 +179,8 @@ summary(modelx)
 #plotting jawlength and pellet mass
 ggplot(Ndata1, aes(x=JawLengthA, y=MassPerPellet)) +
   geom_point(aes(colour=Sex))+
-  xlab("Jaw length (mm)") + ylab("Mass per pellet (g)")
+  xlab("Jaw length (mm)") + ylab("Mass per pellet (g)") +
+  geom_smooth(method=lm, se=FALSE, colour="mediumpurple1")
 
 
 
@@ -191,7 +192,72 @@ ggplot(dataset1, aes(x=JawLengthA, y=MassPerPellet)) +
   geom_point(aes(colour=Sex))+
   xlab("Jaw length (mm)") + ylab("Mass per pellet (g)")
 
+### calfs 
+
+options(contrasts=c(unordered="contr.sum", ordered="contr.poly"))
+modelC <- lm(MassPerPellet~JawLengthA, data=NdataCalf)
+Anova(modelC, type=3)
+options(contrasts=c(unordered="contr.treatment", ordered="contr.poly"))
+
+summary(modelC)
 
 
 
 
+
+options(contrasts=c(unordered="contr.sum", ordered="contr.poly"))
+modelCAll <- lm(MassPerPellet~JawLengthA+Sex+SampMonth, data=dataCalf)
+Anova(modelCAll, type=3)
+options(contrasts=c(unordered="contr.treatment", ordered="contr.poly"))
+
+summary(modelCAll)
+
+ggplot(dataCalf, aes(x=JawLengthA, y=MassPerPellet, col=SampMonth)) +
+  geom_point()+
+  xlab("Jaw length (mm)") + ylab("Mass per pellet (g)") +
+  geom_smooth(method=lm, se=FALSE, colour="mediumpurple1")
+
+
+options(contrasts=c(unordered="contr.sum", ordered="contr.poly"))
+modelCN <- lm(MassPerPellet~JawLengthA+Sex, data=NdataCalf)
+Anova(modelCN, type=3)
+options(contrasts=c(unordered="contr.treatment", ordered="contr.poly"))
+
+summary(modelCAll)
+
+ggplot(dataCalf, aes(x=JawLengthA, y=MassPerPellet, col=SampMonth)) +
+  geom_point()+
+  xlab("Jaw length (mm)") + ylab("Mass per pellet (g)") +
+  geom_smooth(method=lm, se=FALSE, colour="mediumpurple1")
+
+
+
+#both months
+
+options(contrasts=c(unordered="contr.sum", ordered="contr.poly"))
+modelAll <- lm(MassPerPellet~JawLengthA+Sex+SampMonth+deathage, data=dataset1)
+Anova(modelAll, type=3)
+options(contrasts=c(unordered="contr.treatment", ordered="contr.poly"))
+
+summary(modelAll)
+
+ggplot(dataCalf, aes(x=JawLengthA, y=MassPerPellet, col=SampMonth)) +
+  geom_point()+
+  xlab("Jaw length (mm)") + ylab("Mass per pellet (g)") +
+  geom_smooth(method=lm, se=FALSE, colour="mediumpurple1")
+
+
+
+
+
+options(contrasts=c(unordered="contr.sum", ordered="contr.poly"))
+modelAll <- lm(MassPerPellet~JawLengthA+Sex+SampMonth+deathage, data=dataset1)
+Anova(modelAll, type=3)
+options(contrasts=c(unordered="contr.treatment", ordered="contr.poly"))
+
+summary(modelAll)
+
+ggplot(dataCalf, aes(x=JawLengthA, y=MassPerPellet, col=SampMonth)) +
+  geom_point()+
+  xlab("Jaw length (mm)") + ylab("Mass per pellet (g)") +
+  geom_smooth(method=lm, se=FALSE, colour="mediumpurple1")

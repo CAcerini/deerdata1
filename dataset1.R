@@ -6,6 +6,7 @@ library(readxl)
 library(ggplot2)
 library(tidyr)
 library(dplyr)
+library(car)
 
 #import dataset1 and view -unchanged
 Origional_dataset_1 <- read_excel("Origional_dataset_1.xlsx")
@@ -51,9 +52,16 @@ Ndata1 <- dataset1 %>% filter(`SampMonth` == 11)
 
 
 
+NdataCalf <- Ndata1 %>% filter( `deathage` == 0 )
 
 
+dataCalf <- dataset1 %>% filter( `deathage` == 0 )
 
+dataCalf<- dataCalf %>% filter(!(SampMonth == 4))
+
+dataCalf$SampMonth <- dataCalf$SampMonth %>% as.factor()
+
+dataset1$SampMonth <- dataset1$SampMonth %>% as.factor()
 
 
 #-------------------------------------------------------------------------- code graveyard
