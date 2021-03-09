@@ -2,15 +2,11 @@
 rm(list=ls())
 
 #important packages
-library(readxl)
-library(ggplot2)
-library(tidyr)
-library(dplyr)
-library(car)
+library(readxl); library(tidyverse); library(car)
+
 
 #import dataset1 and view -unchanged
 Origional_dataset_1 <- read_excel("Origional_dataset_1.xlsx")
-View(Origional_dataset_1)  
 
 
 
@@ -32,36 +28,48 @@ dataset1 <- dataset1 %>% drop_na()
 dataset1 <- dataset1 %>% separate(LastOfSampleDate, sep = "-", into = c("SampYear", "SampMonth", "SampDay")) %>% 
   mutate_at(c("SampYear", "SampMonth", "SampDay"), as.numeric)
 
-dataset1$dearyear <- dataset1$`SampYear`
-dataset1$dearyear[dataset1$`SampMonth` == 4] <- dataset1$dearyear[dataset1$`SampMonth` == 4]-1
+dataset1$deeryear <- dataset1$`SampYear`
+dataset1$deeryear[dataset1$`SampMonth` == 4] <- dataset1$deeryear[dataset1$`SampMonth` == 4]-1
 
 dataset1 <- dataset1 %>% separate(ExactDoD, sep = "-", into = c("DeathYear", "DeathMonth", "DeathDay")) %>% 
   mutate_at(c("DeathYear", "DeathMonth", "DeathDay"), as.numeric)
 
-dataset1$deathdearyear <- dataset1$`DeathYear`
-dataset1$deathdearyear[(dataset1$`DeathMonth` <5) & !is.na(dataset1$DeathMonth)] <- 
-  dataset1$deathdearyear[(dataset1$`DeathMonth` <5) & !is.na(dataset1$DeathMonth)]-1
+dataset1$deathdeeryear <- dataset1$`DeathYear`
+dataset1$deathdeeryear[(dataset1$`DeathMonth` <5) & !is.na(dataset1$DeathMonth)] <- 
+  dataset1$deathdeeryear[(dataset1$`DeathMonth` <5) & !is.na(dataset1$DeathMonth)]-1
 
-deathage1 <- (dataset1$deathdearyear-dataset1$BirthYear) %>% as.double()  
+deathage1 <- (dataset1$deathdeeryear-dataset1$BirthYear) %>% as.double()  
 dataset1$deathage <- deathage1
 
+
+#years and sample month as factors  
+dataset1$deathdeeryear <- dataset1$deathdeeryear %>% as.factor()
+
+dataset1$SampMonth <- dataset1$SampMonth %>% as.factor()
 
 
 #create new dataset with just samples of November before death  
 Ndata1 <- dataset1 %>% filter(`SampMonth` == 11)
 
+Ndata1 <- Ndata1 %>% filter(deeryear == deathdeeryear) # removing deer that have a long time between sample and death. 
+                                                      #should just be deaths in december-april (same deer year)
 
 
-NdataCalf <- Ndata1 %>% filter( `deathage` == 0 )
 
+
+
+#creating calf subset with both august and november data 
 
 dataCalf <- dataset1 %>% filter( `deathage` == 0 )
 
-dataCalf<- dataCalf %>% filter(!(SampMonth == 4))
+dataCalf<- dataCalf %>% filter(!(SampMonth == 4))  #removing that one april sample 
 
-dataCalf$SampMonth <- dataCalf$SampMonth %>% as.factor()
 
-dataset1$SampMonth <- dataset1$SampMonth %>% as.factor()
+
+#creating calf subset with only november samples 
+NdataCalf2 <- dataCalf %>%  filter(SampMonth == 11)
+
+
 
 
 #-------------------------------------------------------------------------- code graveyard
