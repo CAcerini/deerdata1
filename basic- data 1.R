@@ -153,11 +153,11 @@ anova(modelx)
 
 #type 3 SS 
 options(contrasts=c(unordered="contr.sum", ordered="contr.poly"))
-modelY <- lm(MassPerPellet~Sex+JawLengthA+deathage, data=Ndata1)
+modelY <- lm(MassPerPellet~Sex+JawLengthA+deathage+deathdeeryear, data=Ndata1)
 Anova(modelY, type=3)
 options(contrasts=c(unordered="contr.treatment", ordered="contr.poly"))
 
-
+summary(modelY)
 #assumptions
 par(mfrow=c(2,2)) 
 plot(modelY)
@@ -217,13 +217,14 @@ ggplot(dataCalf, aes(x=JawLengthA, y=MassPerPellet, col=SampMonth)) +
   xlab("Jaw length (mm)") + ylab("Mass per pellet (g)") +
   geom_smooth(method=lm, se=FALSE, colour="mediumpurple1")
 
+#November calves 
 
 options(contrasts=c(unordered="contr.sum", ordered="contr.poly"))
 modelCN <- lm(MassPerPellet~JawLengthA+Sex, data=NdataCalf)
 Anova(modelCN, type=3)
 options(contrasts=c(unordered="contr.treatment", ordered="contr.poly"))
 
-summary(modelCAll)
+summary(modelCN)
 
 ggplot(dataCalf, aes(x=JawLengthA, y=MassPerPellet, col=SampMonth)) +
   geom_point()+

@@ -67,7 +67,7 @@ dataCalf<- dataCalf %>% filter(!(SampMonth == 4))  #removing that one april samp
 
 
 #creating calf subset with only november samples 
-NdataCalf2 <- dataCalf %>%  filter(SampMonth == 11)
+NdataCalf <- dataCalf %>%  filter(SampMonth == 11)
 
 
 
